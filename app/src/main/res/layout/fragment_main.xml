@@ -48,10 +48,10 @@
                         android:id="@+id/bodyLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginBottom="100dp">
+                        android:orientation="vertical">
 
                         <LinearLayout
+                            android:id="@+id/bookmarkLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -63,13 +63,14 @@
                                 android:id="@+id/recycler_bookmark"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="16dp"
-                                android:layout_marginTop="12dp"
-                                android:layout_marginBottom="12dp"
+                                android:layout_marginLeft="11dp"
+                                android:layout_marginTop="7dp"
+                                android:layout_marginBottom="7dp"
                                 android:nestedScrollingEnabled="false" />
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/newPhotoLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
@@ -81,9 +82,10 @@
                                 android:id="@+id/recycler_new"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="16dp"
-                                android:layout_marginTop="12dp"
-                                android:layout_marginBottom="12dp"
+                                android:layout_marginLeft="11dp"
+                                android:layout_marginRight="11dp"
+                                android:layout_marginTop="7dp"
+                                android:layout_marginBottom="7dp"
                                 android:nestedScrollingEnabled="false" />
                         </LinearLayout>
                     </LinearLayout>

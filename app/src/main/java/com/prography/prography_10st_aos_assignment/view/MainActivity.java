@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
         setBottomNav();
         setStatusBar();
-
     }
 
     private void setBottomNav(){
