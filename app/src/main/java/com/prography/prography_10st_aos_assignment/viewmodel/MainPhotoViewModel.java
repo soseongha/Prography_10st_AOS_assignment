@@ -1,29 +1,23 @@
 package com.prography.prography_10st_aos_assignment.viewmodel;
 
-import android.app.Application;
-import android.util.Log;
-import android.view.View;
-
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
 import com.prography.prography_10st_aos_assignment.utils.Callback;
 
 import java.util.List;
 
-public class PhotoViewModel extends ViewModel {
+public class MainPhotoViewModel extends ViewModel {
     private final GetPhotosUsecase getPhotosUsecase;
     private final MutableLiveData<List<Photo>> photosLiveData = new MutableLiveData<>();
     private int page;
     private int perPage;
     private final String TAG = getClass().toString();
 
-    public PhotoViewModel(GetPhotosUsecase getPhotosUsecase) {
+    public MainPhotoViewModel(GetPhotosUsecase getPhotosUsecase) {
         this.getPhotosUsecase = getPhotosUsecase;
         page = 1;
         perPage = 10;

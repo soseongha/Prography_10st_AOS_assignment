@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,15 +20,14 @@ import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashR
 import com.prography.prography_10st_aos_assignment.databinding.FragmentMainBinding;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
-import com.prography.prography_10st_aos_assignment.viewmodel.PhotoViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.PhotoViewModelFactory;
+import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModel;
+import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModelFactory;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
-    private PhotoViewModel viewModel;
+    private MainPhotoViewModel viewModel;
     private Context context;
     private Boolean isLoading = false;
     private final String TAG = getClass().toString();
@@ -40,8 +38,8 @@ public class MainFragment extends Fragment {
         context = getContext();
 
         GetPhotosUsecase getPhotosUsecase = new GetPhotosUsecase(new UnsplashRepositoryImpl());
-        PhotoViewModelFactory factory = new PhotoViewModelFactory(getPhotosUsecase);
-        viewModel = new ViewModelProvider(this, factory).get(PhotoViewModel.class);
+        MainPhotoViewModelFactory factory = new MainPhotoViewModelFactory(getPhotosUsecase);
+        viewModel = new ViewModelProvider(this, factory).get(MainPhotoViewModel.class);
 
         showSkeleton(true);
         loadNewPhotos();
