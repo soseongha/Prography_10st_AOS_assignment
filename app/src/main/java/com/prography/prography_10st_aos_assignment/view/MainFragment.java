@@ -2,10 +2,13 @@ package com.prography.prography_10st_aos_assignment.view;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +42,7 @@ public class MainFragment extends Fragment {
         PhotoViewModelFactory factory = new PhotoViewModelFactory(getPhotosUsecase);
         viewModel = new ViewModelProvider(this, factory).get(PhotoViewModel.class);
 
+        showSkeleton(true);
         loadNewPhotos();
         loadBookmarks();
 
@@ -66,6 +70,7 @@ public class MainFragment extends Fragment {
                 photos.addAll(fetchedPhotos);
                 mainNewAdapter.notifyItemInserted(photos.size() - 1);
             }
+            showSkeleton(false);
         });
 
         viewModel.fetchPhotos();
@@ -73,6 +78,25 @@ public class MainFragment extends Fragment {
 
     private void loadBookmarks() {
         binding.itemTitleBookmark.textviewTitle.setText("북마크");
-        binding.bookmarkLayout.setVisibility(View.GONE);
+    }
+
+    private void showSkeleton(boolean isLoading) {
+        if(isLoading){
+            binding.shimmerBookmark.startShimmer();
+            binding.shimmerNew.startShimmer();
+            binding.shimmerBookmark.setVisibility(View.VISIBLE);
+            binding.recyclerBookmark.setVisibility(View.GONE);
+            binding.shimmerNew.setVisibility(View.VISIBLE);
+            binding.recyclerNew.setVisibility(View.GONE);
+        }
+        else{
+            binding.shimmerBookmark.stopShimmer();
+            binding.shimmerNew.stopShimmer();
+            binding.shimmerBookmark.setVisibility(View.GONE);
+            binding.recyclerBookmark.setVisibility(View.VISIBLE);
+            binding.shimmerNew.setVisibility(View.GONE);
+            binding.recyclerNew.setVisibility(View.VISIBLE);
+        }
+
     }
 }
