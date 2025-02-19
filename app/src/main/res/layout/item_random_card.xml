@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:scaleType="fitCenter"
                 android:adjustViewBounds="true"
-                android:src="@drawable/Image_example"/>
+                android:src="@drawable/example_image"/>
         </LinearLayout>
 
         <LinearLayout
