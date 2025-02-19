@@ -31,6 +31,7 @@ public class RandomphotoFragment extends Fragment {
     private FragmentRandomphotoBinding binding;
     private RandomPhotoViewModel viewModel;
     private Context context;
+    ViewPager2 viewpager;
     private final String TAG = getClass().toString();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,7 +50,7 @@ public class RandomphotoFragment extends Fragment {
 
     private void loadRandomPhotos(){
         ArrayList<Photo> photos = new ArrayList<>();
-        ViewPager2 viewpager = binding.viewpagerRandomphoto;
+        viewpager = binding.viewpagerRandomphoto;
         RandomphotoAdapter adapter = new RandomphotoAdapter();
         adapter.setPhotos(photos, context, this);
         viewpager.setAdapter(adapter);
@@ -88,7 +89,8 @@ public class RandomphotoFragment extends Fragment {
     }
 
     public void onBookmarkButtonClicked(){
-
+        viewpager.setCurrentItem(viewpager.getCurrentItem()+1, true);
+        //TODO 북마크에 저장 로직 추가 요망
     }
 
     public void onInfoButtonClicked(){
