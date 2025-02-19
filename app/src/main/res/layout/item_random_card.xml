@@ -6,7 +6,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/top_random_card"
-        android:layout_width="327dp"
+        android:layout_width="match_parent"
         android:layout_height="553dp"
         android:layout_margin="5dp"
         android:background="@drawable/bg_rounded_white"
@@ -19,13 +19,14 @@
         <LinearLayout
             android:id="@+id/imageHolderLayout"
             android:layout_width="match_parent"
-            android:layout_height="421dp"
+            android:layout_height="0dp"
             android:background="@drawable/bg_rounded_black"
             android:layout_margin="12dp"
             android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/buttonHolderLayout">
             <ImageView
                 android:id="@+id/imageview_random"
                 android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.prography.prography_10st_aos_assignment.databinding.FragmentRandompho
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetRandomPhotoUsecase;
+import com.prography.prography_10st_aos_assignment.utils.ViewPagerItemDecoration;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModel;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModelFactory;
 import com.prography.prography_10st_aos_assignment.viewmodel.RandomPhotoViewModel;
@@ -55,6 +57,15 @@ public class RandomphotoFragment extends Fragment {
         adapter.setPhotos(photos, context, this);
         viewpager.setAdapter(adapter);
         viewpager.setOffscreenPageLimit(1);
+        int pageMarginPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+        viewpager.addItemDecoration(new ViewPagerItemDecoration(pageMarginPx));
+        viewpager.setPageTransformer((page, position) -> {
+            float scaleFactor = 1 - 0.1f * Math.abs(position);
+            page.setScaleY(scaleFactor);
+            page.setAlpha(0.8f + (1 - Math.abs(position)) * 0.2f);
+        });
+        viewpager.setClipToPadding(false);
+        viewpager.setClipChildren(false);
 
         viewModel.getRandomPhoto().observe(getViewLifecycleOwner(), fetchedPhoto -> {
             if(fetchedPhoto == null){
