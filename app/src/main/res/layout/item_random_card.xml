@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="327dp"
+    android:layout_height="553dp"
+    android:layout_margin="5dp"
+    android:background="@drawable/bg_rounded_white"
+    android:elevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/top_random_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/imageHolderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="421dp"
+            android:background="@drawable/bg_rounded_black"
+            android:layout_margin="12dp"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/Image_example"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/buttonHolderLayout"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageHolderLayout">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_x"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:background="@drawable/button_x"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_bookmark"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:background="@drawable/button_bookmark"/>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/button_info"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:background="@drawable/button_info"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
