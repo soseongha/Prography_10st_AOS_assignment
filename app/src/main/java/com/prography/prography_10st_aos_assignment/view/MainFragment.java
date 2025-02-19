@@ -31,6 +31,7 @@ public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private PhotoViewModel viewModel;
     private Context context;
+    private Boolean isLoading = false;
     private final String TAG = getClass().toString();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,20 +61,43 @@ public class MainFragment extends Fragment {
         newRecycler.setLayoutManager(layoutManager);
         newRecycler.setAdapter(mainNewAdapter);
 
+        viewModel.clearPage();
         viewModel.getPhotos().observe(getViewLifecycleOwner(), fetchedPhotos -> {
             if(fetchedPhotos == null){
                 Toast.makeText(context, "호출에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "호출 실패");
             }
             else{
-                photos.clear();
                 photos.addAll(fetchedPhotos);
                 mainNewAdapter.notifyItemInserted(photos.size() - 1);
             }
             showSkeleton(false);
         });
-
         viewModel.fetchPhotos();
+
+        /*무한스크롤*/
+        long DEBOUNCE_DELAY = 0;
+        Handler handler = new Handler(Looper.getMainLooper());
+        newRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isLoading) {
+                    if (photos.isEmpty()) {
+                        return;
+                    } else {
+                        isLoading = true;
+                        viewModel.fetchPhotos();
+                        handler.postDelayed(() -> isLoading = false, DEBOUNCE_DELAY);
+                    }
+                }
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     private void loadBookmarks() {

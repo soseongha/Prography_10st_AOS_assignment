@@ -43,7 +43,7 @@ public class UnsplashRepositoryImpl implements UnsplashRepository {
                     List<PhotoDto> responseBody = response.body();
                     List<Photo> photos = new ArrayList<>();
                     for (PhotoDto dto : responseBody) {
-                        photos.add(new Photo(dto.getId(), dto.getDescription(), dto.getDescription(), dto.getUser().getName(), dto.getUrls().getRaw()));
+                        photos.add(new Photo(dto.getId(), dto.getDescription(), dto.getDescription(), dto.getUser().getName(), dto.getUrls().getSmall()));
                     }
                     callback.onResponse(photos);
                 } else {

@@ -21,4 +21,8 @@ public class UrlsDto {
     public String getRaw() {
         return raw;
     }
+
+    public String getSmall() {
+        return small;
+    }
 }

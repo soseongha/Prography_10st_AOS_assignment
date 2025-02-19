@@ -1,6 +1,7 @@
 package com.prography.prography_10st_aos_assignment.viewmodel;
 
 import android.app.Application;
+import android.util.Log;
 import android.view.View;
 
 import androidx.lifecycle.AndroidViewModel;
@@ -20,10 +21,11 @@ public class PhotoViewModel extends ViewModel {
     private final MutableLiveData<List<Photo>> photosLiveData = new MutableLiveData<>();
     private int page;
     private int perPage;
+    private final String TAG = getClass().toString();
 
     public PhotoViewModel(GetPhotosUsecase getPhotosUsecase) {
         this.getPhotosUsecase = getPhotosUsecase;
-        page = 0;
+        page = 1;
         perPage = 10;
     }
 
@@ -36,17 +38,20 @@ public class PhotoViewModel extends ViewModel {
     }
 
     public void fetchPhotos() {
-
         getPhotosUsecase.execute(page, perPage, new Callback<List<Photo>>() {
             @Override
             public void onResponse(List<Photo> result) {
                 setPhotos(result);
+                page++;
             }
-
             @Override
             public void onFailure(Throwable result) {
                 setPhotos(null);
             }
         });
+    }
+
+    public void clearPage(){
+        page = 1;
     }
 }
