@@ -24,7 +24,8 @@
         </activity>
         <activity
             android:name=".view.PhotoDetailActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Prography_10st_AOS_assignment.PhotoDetail">
         </activity>
 
     </application>

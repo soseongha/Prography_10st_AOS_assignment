@@ -5,13 +5,16 @@
     <!-- Main application theme. -->
     <style name="Theme.Prography_10st_AOS_assignment" parent="Base.Theme.Prography_10st_AOS_assignment">
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:statusBarColor">@color/white</item> <!-- 상태바 색상 설정 -->
-        <item name="android:windowLightStatusBar">true</item> <!-- 상태바 아이콘을 어두운 색으로 설정 -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
-    <!-- Dark application theme. -->
-    <style name="Theme.Prography_10st_AOS_assignment.Dark" parent="Base.Theme.Prography_10st_AOS_assignment">
+    <!-- PhotoDetail theme. -->
+    <style name="Theme.Prography_10st_AOS_assignment.PhotoDetail" parent="Base.Theme.Prography_10st_AOS_assignment">
         <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:statusBarColor">@color/black_alpha90</item> <!-- 상태바 색상 설정 -->
-        <item name="android:windowLightStatusBar">false</item> <!-- 상태바 아이콘을 어두운 색으로 설정 -->
+        <item name="android:statusBarColor">@color/black_alpha90</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
 </resources>
