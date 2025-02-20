@@ -4,12 +4,12 @@
     <item
         android:id="@+id/menu_main"
         android:title="메인"
-        android:icon="@drawable/logo_house"
+        android:icon="@drawable/icon_house"
         android:enabled="true" />
     <item
         android:id="@+id/menu_randomphoto"
         android:title="랜덤 포토"
-        android:icon="@drawable/logo_cards"
+        android:icon="@drawable/icon_cards"
         android:enabled="true" />
 
 </menu>
