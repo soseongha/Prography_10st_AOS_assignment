@@ -56,21 +56,21 @@ public class RandomphotoFragment extends Fragment {
         RandomphotoAdapter adapter = new RandomphotoAdapter();
         adapter.setPhotos(photos, context, this);
         viewpager.setAdapter(adapter);
-        viewpager.setOffscreenPageLimit(1);
-        int pageMarginPx = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
-        viewpager.addItemDecoration(new ViewPagerItemDecoration(pageMarginPx));
-        viewpager.setPageTransformer((page, position) -> {
-            float scaleFactor = 1 - 0.1f * Math.abs(position);
-            page.setScaleY(scaleFactor);
-            page.setAlpha(0.8f + (1 - Math.abs(position)) * 0.2f);
-        });
-        viewpager.setClipToPadding(false);
-        viewpager.setClipChildren(false);
+
+        int itemMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getResources().getDisplayMetrics());
+        int previewMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getResources().getDisplayMetrics());
+        setPreviewOfViewPager(viewpager, itemMargin, previewMargin);
 
         viewModel.getRandomPhoto().observe(getViewLifecycleOwner(), fetchedPhoto -> {
             if(fetchedPhoto == null){
                 Toast.makeText(context, "호출에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "호출 실패");
+                /**
+                 * TODO: 삭제해야 하는 코드
+                 */
+                fetchedPhoto = new Photo("a1jfkd", "example", "example", "ssh", "https://r1.community.samsung.com/t5/image/serverpage/image-id/141368i8F105F6B57DB0E3D/image-size/large?v=v2&px=999");
+                photos.add(fetchedPhoto);
+                adapter.notifyItemInserted(photos.size() - 1);
             }
             else{
                 photos.add(fetchedPhoto);
@@ -92,6 +92,19 @@ public class RandomphotoFragment extends Fragment {
                     }
                 }, 50);
             }
+        });
+    }
+
+    private void setPreviewOfViewPager(ViewPager2 viewpager, int itemMargin, int previewMargin){
+        int decoMargin = itemMargin + previewMargin;
+        int pageTransX = decoMargin * 2;
+
+        viewpager.setClipToPadding(false);
+        viewpager.setClipChildren(false);
+        viewpager.setOffscreenPageLimit(1);
+        viewpager.addItemDecoration(new ViewPagerItemDecoration(decoMargin));
+        viewpager.setPageTransformer((page, position) -> {
+            page.setTranslationX(position * - pageTransX);
         });
     }
 
