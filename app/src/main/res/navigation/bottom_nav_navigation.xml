@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_nav_navigation"
+    app:startDestination="@+id/menu_main">
+    <fragment
+        android:id="@+id/menu_main"
+        android:name="com.prography.prography_10st_aos_assignment.view.MainFragment"
+        android:label="main"
+        tools:layout="@layout/fragment_main"/>
+
+    <fragment
+        android:id="@+id/menu_randomphoto"
+        android:name="com.prography.prography_10st_aos_assignment.view.RandomphotoFragment"
+        android:label="random photo"
+        tools:layout="@layout/fragment_randomphoto" />
+</navigation>
