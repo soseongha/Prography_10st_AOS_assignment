@@ -12,6 +12,7 @@ import com.prography.prography_10st_aos_assignment.data.dto.PhotoDto;
 import com.prography.prography_10st_aos_assignment.data.dto.TagDto;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
 import com.prography.prography_10st_aos_assignment.domain.repository.UnsplashRepository;
+import com.prography.prography_10st_aos_assignment.utils.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +54,30 @@ public class UnsplashRepositoryImpl implements UnsplashRepository {
 
             @Override
             public void onFailure(Call<List<PhotoDto>> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getRandomPhoto(Callback<Photo> callback) {
+        Call<PhotoDto> result = apiService.getRandomPhoto(clientId);
+
+        result.enqueue(new retrofit2.Callback<PhotoDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(Call<PhotoDto> call, Response<PhotoDto> response) {
+                if (response.isSuccessful()) {
+                    PhotoDto dto = response.body();
+                    Photo photo = new Photo(dto.getId(), dto.getDescription(), dto.getDescription(), dto.getUser().getName(), dto.getUrls().getSmall());
+                    callback.onResponse(photo);
+                } else {
+                    callback.onResponse(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PhotoDto> call, Throwable t) {
                 callback.onFailure(t);
             }
         });

@@ -15,4 +15,9 @@ public interface UnsplashApiService {
             @Query("page") Integer page,
             @Query("per_page") Integer per_page
     );
+
+    @GET("/photos/random")
+    Call<PhotoDto> getRandomPhoto(
+            @Query("client_id") String clientId
+    );
 }

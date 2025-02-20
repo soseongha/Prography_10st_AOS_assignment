@@ -42,7 +42,8 @@
                 <androidx.core.widget.NestedScrollView
                     android:id="@+id/scrollviewLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true">
 
                     <LinearLayout
                         android:id="@+id/bodyLayout"
@@ -99,7 +100,7 @@
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/recycler_new"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="11dp"
                                 android:layout_marginRight="11dp"
                                 android:layout_marginTop="7dp"
@@ -108,7 +109,7 @@
                             <com.facebook.shimmer.ShimmerFrameLayout
                                 android:id="@+id/shimmer_new"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="wrap_content"
                                 android:layout_marginLeft="11dp"
                                 android:layout_marginRight="11dp"
                                 android:layout_marginTop="7dp"
