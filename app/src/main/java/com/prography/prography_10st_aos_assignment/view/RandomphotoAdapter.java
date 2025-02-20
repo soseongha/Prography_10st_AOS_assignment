@@ -92,7 +92,7 @@ public class RandomphotoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             infoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    randomphotoFragment.onInfoButtonClicked();
+                    randomphotoFragment.onInfoButtonClicked(photo.getId());
                 }
             });
         }

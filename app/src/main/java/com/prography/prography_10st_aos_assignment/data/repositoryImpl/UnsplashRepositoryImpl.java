@@ -44,7 +44,13 @@ public class UnsplashRepositoryImpl implements UnsplashRepository {
                     List<PhotoDto> responseBody = response.body();
                     List<Photo> photos = new ArrayList<>();
                     for (PhotoDto dto : responseBody) {
-                        photos.add(new Photo(dto.getId(), dto.getDescription(), dto.getDescription(), dto.getUser().getName(), dto.getUrls().getSmall()));
+                        List<String> tags = new ArrayList<>();
+                        if(dto.getTags() != null){
+                            for(TagDto tagDto : dto.getTags()){
+                                tags.add(tagDto.getTitle());
+                            }
+                        }
+                        photos.add(new Photo(dto.getId(), dto.getDescription(), dto.getSlug(), dto.getUser().getName(), dto.getUrls().getSmall(), dto.getLinks().getDownload(), tags));
                     }
                     callback.onResponse(photos);
                 } else {
@@ -69,7 +75,43 @@ public class UnsplashRepositoryImpl implements UnsplashRepository {
             public void onResponse(Call<PhotoDto> call, Response<PhotoDto> response) {
                 if (response.isSuccessful()) {
                     PhotoDto dto = response.body();
-                    Photo photo = new Photo(dto.getId(), dto.getDescription(), dto.getDescription(), dto.getUser().getName(), dto.getUrls().getSmall());
+                    List<String> tags = new ArrayList<>();
+                    if(dto.getTags() != null){
+                        for(TagDto tagDto : dto.getTags()){
+                            tags.add(tagDto.getTitle());
+                        }
+                    }
+                    Photo photo = new Photo(dto.getId(), dto.getDescription(), dto.getSlug(), dto.getUser().getName(), dto.getUrls().getSmall(), dto.getLinks().getDownload(), tags);
+                    callback.onResponse(photo);
+                } else {
+                    callback.onResponse(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<PhotoDto> call, Throwable t) {
+                callback.onFailure(t);
+            }
+        });
+    }
+
+    @Override
+    public void getPhoto(String id, Callback<Photo> callback) {
+        Call<PhotoDto> result = apiService.getPhoto(id, clientId);
+
+        result.enqueue(new retrofit2.Callback<PhotoDto>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onResponse(Call<PhotoDto> call, Response<PhotoDto> response) {
+                if (response.isSuccessful()) {
+                    PhotoDto dto = response.body();
+                    List<String> tags = new ArrayList<>();
+                    if(dto.getTags() != null){
+                        for(TagDto tagDto : dto.getTags()){
+                            tags.add(tagDto.getTitle());
+                        }
+                    }
+                    Photo photo = new Photo(dto.getId(), dto.getDescription(), dto.getSlug(), dto.getUser().getName(), dto.getUrls().getSmall(), dto.getLinks().getDownload(), tags);
                     callback.onResponse(photo);
                 } else {
                     callback.onResponse(null);

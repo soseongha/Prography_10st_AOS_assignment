@@ -11,13 +11,16 @@ public class Photo {
     private List<String> tags;
     private final String username;
     private final String imageUrl;
+    private final String downloadUrl;
 
-    public Photo(String id, String description, String title, String username, String imageUrl) {
+    public Photo(String id, String description, String title, String username, String imageUrl, String downloadUrl, List<String> tags) {
         this.id = id;
         this.description = description;
         this.title = title;
         this.username = username;
         this.imageUrl = imageUrl;
+        this.downloadUrl = downloadUrl;
+        this.tags = tags;
     }
 
     public String getId() {
@@ -42,6 +45,10 @@ public class Photo {
 
     public List<String> getTags() {
         return tags;
+    }
+
+    public String getDownloadUrl() {
+        return downloadUrl;
     }
 }
 

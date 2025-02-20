@@ -76,6 +76,12 @@ public class MainNewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     .load(photo.getImageUrl())
                     .into(newImageview);
             newImageview.setClipToOutline(true);
+            newTop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mainFragment.onNewPhotoClicked(photo.getId());
+                }
+            });
         }
     }
 }

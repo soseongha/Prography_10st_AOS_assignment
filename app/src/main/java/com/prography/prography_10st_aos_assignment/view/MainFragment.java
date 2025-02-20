@@ -1,6 +1,7 @@
 package com.prography.prography_10st_aos_assignment.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -120,5 +121,11 @@ public class MainFragment extends Fragment {
             binding.recyclerNew.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    public void onNewPhotoClicked(String photoId){
+        Intent intent = new Intent(context, PhotoDetailActivity.class);
+        intent.putExtra("photoId", photoId);
+        startActivity(intent);
     }
 }
