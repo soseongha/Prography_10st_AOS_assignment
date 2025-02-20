@@ -14,13 +14,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.prography.prography_10st_aos_assignment.data.repositoryImpl.LocalRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.FragmentMainBinding;
+import com.prography.prography_10st_aos_assignment.domain.entity.Bookmark;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
+import com.prography.prography_10st_aos_assignment.domain.usecase.GetBookmarksUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
+import com.prography.prography_10st_aos_assignment.utils.WrapContentLinearLayoutManager;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModel;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModelFactory;
 
@@ -39,7 +44,8 @@ public class MainFragment extends Fragment {
         context = getContext();
 
         GetPhotosUsecase getPhotosUsecase = new GetPhotosUsecase(new UnsplashRepositoryImpl());
-        MainPhotoViewModelFactory factory = new MainPhotoViewModelFactory(getPhotosUsecase);
+        GetBookmarksUsecase getBookmarksUsecase = new GetBookmarksUsecase(new LocalRepositoryImpl(context));
+        MainPhotoViewModelFactory factory = new MainPhotoViewModelFactory(getPhotosUsecase, getBookmarksUsecase);
         viewModel = new ViewModelProvider(this, factory).get(MainPhotoViewModel.class);
 
         showSkeleton(true);
@@ -101,6 +107,25 @@ public class MainFragment extends Fragment {
 
     private void loadBookmarks() {
         binding.itemTitleBookmark.textviewTitle.setText("북마크");
+
+        ArrayList<Bookmark> bookmarks = new ArrayList<>();
+        RecyclerView bookmarkRecycler = binding.recyclerBookmark;
+        MainBookmarkAdapter mainBookmarkAdapter = new MainBookmarkAdapter();
+        mainBookmarkAdapter.setBookmarks(bookmarks, context, this);
+        bookmarkRecycler.setLayoutManager(new WrapContentLinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+        bookmarkRecycler.setAdapter(mainBookmarkAdapter);
+
+        viewModel.getBookmarks().observe(getViewLifecycleOwner(), fetchedBookmarks -> {
+            if(fetchedBookmarks == null || fetchedBookmarks.isEmpty()) {
+                bookmarks.clear();
+                binding.bookmarkLayout.setVisibility(View.GONE);
+            }
+            else{
+                bookmarks.addAll(fetchedBookmarks);
+                mainBookmarkAdapter.notifyItemInserted(bookmarks.size() - 1);
+            }
+        });
+        viewModel.fetchBookmarks();
     }
 
     private void showSkeleton(boolean isLoading) {
@@ -124,6 +149,12 @@ public class MainFragment extends Fragment {
     }
 
     public void onNewPhotoClicked(String photoId){
+        Intent intent = new Intent(context, PhotoDetailActivity.class);
+        intent.putExtra("photoId", photoId);
+        startActivity(intent);
+    }
+
+    public void onBookmarkPhotoClicked(String photoId){
         Intent intent = new Intent(context, PhotoDetailActivity.class);
         intent.putExtra("photoId", photoId);
         startActivity(intent);
