@@ -1,6 +1,7 @@
 package com.prography.prography_10st_aos_assignment.view;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.ActivityPhotodetailBinding;
+import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotoUsecase;
 import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModel;
 import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModelFactory;
@@ -21,6 +23,8 @@ import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewMode
 public class PhotoDetailActivity extends AppCompatActivity {
     private ActivityPhotodetailBinding binding;
     private PhotoDetailViewModel viewModel;
+    private Context context;
+    private Photo photo;
     public String TAG = getClass().toString();
 
     @Override
@@ -28,6 +32,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPhotodetailBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
+        this.context = this;
         setContentView(view);
 
         GetPhotoUsecase getPhotoUsecase = new GetPhotoUsecase(new UnsplashRepositoryImpl());
@@ -49,23 +54,24 @@ public class PhotoDetailActivity extends AppCompatActivity {
         }
 
         viewModel.fetchPhoto(photoId);
-        viewModel.getPhoto().observe(this, photo -> {
-            if(photo == null){
+        viewModel.getPhoto().observe(this, fetchedPhoto -> {
+            if(fetchedPhoto == null){
                 Toast.makeText(this, "호출에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "호출 실패");
             }
             else{
-                binding.textviewUsername.setText(photo.getUsername());
-                binding.textviewTitle.setText(photo.getTitle());
-                binding.textviewDescription.setText(photo.getDescription());
+                binding.textviewUsername.setText(fetchedPhoto.getUsername());
+                binding.textviewTitle.setText(fetchedPhoto.getTitle());
+                binding.textviewDescription.setText(fetchedPhoto.getDescription());
                 String tags = "";
-                if(photo.getTags() != null) {
-                    for (String tag : photo.getTags()) {
+                if(fetchedPhoto.getTags() != null) {
+                    for (String tag : fetchedPhoto.getTags()) {
                         tags = tags.concat(" #" + tag);
                     }
                 }
                 binding.textviewTag.setText(tags);
-                Glide.with(this).load(photo.getImageUrl()).into(binding.imageviewDetail);
+                Glide.with(this).load(fetchedPhoto.getImageUrl()).into(binding.imageviewDetail);
+                photo = fetchedPhoto;
             }
         });
     }
@@ -83,7 +89,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
         binding.buttonDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                viewModel.downloadPhoto(context, photo.getDownloadUrl(), photo.getTitle());
             }
         });
     }
