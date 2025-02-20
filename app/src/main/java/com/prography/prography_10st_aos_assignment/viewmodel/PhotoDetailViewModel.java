@@ -10,24 +10,48 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
+import com.prography.prography_10st_aos_assignment.domain.usecase.IsBookmarkedUsecase;
+import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotoUsecase;
 import com.prography.prography_10st_aos_assignment.utils.Callback;
 
 public class PhotoDetailViewModel extends ViewModel {
     private final GetPhotoUsecase getPhotoUsecase;
+    private final IsBookmarkedUsecase isBookmarkedUsecase;
+    private final ToggleBookmarkUsecase toggleBookmarkUsecase;
     private final MutableLiveData<Photo> photoLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isBookmarkedLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> toggleBookmarkLiveData = new MutableLiveData<>();
     private final String TAG = getClass().toString();
 
-    public PhotoDetailViewModel(GetPhotoUsecase getPhotoUsecase) {
+    public PhotoDetailViewModel(GetPhotoUsecase getPhotoUsecase, IsBookmarkedUsecase isBookmarkedUsecase, ToggleBookmarkUsecase toggleBookmarkUsecase) {
         this.getPhotoUsecase = getPhotoUsecase;
+        this.isBookmarkedUsecase = isBookmarkedUsecase;
+        this.toggleBookmarkUsecase = toggleBookmarkUsecase;
     }
 
     public MutableLiveData<Photo> getPhoto() {
         return photoLiveData;
     }
 
+    public MutableLiveData<Boolean> getIsBookmarked() {
+        return isBookmarkedLiveData;
+    }
+
+    public MutableLiveData<Boolean> getToggleBookmark() {
+        return toggleBookmarkLiveData;
+    }
+
     public void setPhoto(Photo photo){
         photoLiveData.setValue(photo);
+    }
+
+    public void setIsBookmarked(Boolean isBookmarked){
+        isBookmarkedLiveData.postValue(isBookmarked);
+    }
+
+    public void setToggleBookmark(Boolean toggleBookmark){
+        toggleBookmarkLiveData.postValue(toggleBookmark);
     }
 
     public void fetchPhoto(String id) {
@@ -60,5 +84,20 @@ public class PhotoDetailViewModel extends ViewModel {
         } catch (Exception e) {
             Toast.makeText(context, "다운로드 실패: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void loadBookmarkStatus(String photoId){
+        new Thread(() -> {
+            boolean isBookmarked = isBookmarkedUsecase.execute(photoId);
+            setIsBookmarked(isBookmarked);
+        }).start();
+    }
+
+    public void toggleBookmark(Photo photo, Boolean isBookmarked){
+        new Thread(() -> {
+            boolean bookmarked = toggleBookmarkUsecase.execute(photo, isBookmarked);
+            setToggleBookmark(bookmarked);
+        }).start();
+
     }
 }

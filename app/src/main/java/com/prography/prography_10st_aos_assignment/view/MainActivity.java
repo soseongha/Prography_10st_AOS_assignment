@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity {
             // navHostFragment가 null인 경우에 대한 처리
             Log.e(TAG, "NavHostFragment not found");
         }
-
     }
 
     private void initStatusBar(){

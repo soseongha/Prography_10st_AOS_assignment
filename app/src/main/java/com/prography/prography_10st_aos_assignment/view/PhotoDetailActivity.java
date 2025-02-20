@@ -1,6 +1,5 @@
 package com.prography.prography_10st_aos_assignment.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,9 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.prography.prography_10st_aos_assignment.data.repositoryImpl.LocalRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.ActivityPhotodetailBinding;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
+import com.prography.prography_10st_aos_assignment.domain.usecase.IsBookmarkedUsecase;
+import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotoUsecase;
 import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModel;
 import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModelFactory;
@@ -25,6 +27,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
     private PhotoDetailViewModel viewModel;
     private Context context;
     private Photo photo;
+    private Boolean isBookmarked;
     public String TAG = getClass().toString();
 
     @Override
@@ -35,8 +38,12 @@ public class PhotoDetailActivity extends AppCompatActivity {
         this.context = this;
         setContentView(view);
 
-        GetPhotoUsecase getPhotoUsecase = new GetPhotoUsecase(new UnsplashRepositoryImpl());
-        PhotoDetailViewModelFactory factory = new PhotoDetailViewModelFactory(getPhotoUsecase);
+        UnsplashRepositoryImpl unsplashRepository = new UnsplashRepositoryImpl();
+        LocalRepositoryImpl localRepository = new LocalRepositoryImpl(this);
+        GetPhotoUsecase getPhotoUsecase = new GetPhotoUsecase(unsplashRepository);
+        IsBookmarkedUsecase isBookmarkedUsecase = new IsBookmarkedUsecase(localRepository);
+        ToggleBookmarkUsecase bookMarkUsecase = new ToggleBookmarkUsecase(localRepository);
+        PhotoDetailViewModelFactory factory = new PhotoDetailViewModelFactory(getPhotoUsecase, isBookmarkedUsecase, bookMarkUsecase);
         viewModel = new ViewModelProvider(this, factory).get(PhotoDetailViewModel.class);
 
         loadPhoto();
@@ -48,6 +55,8 @@ public class PhotoDetailActivity extends AppCompatActivity {
     private void loadPhoto(){
         Intent prevIntent = getIntent();
         String photoId = prevIntent.getStringExtra("photoId");
+        binding.buttonDownload.setEnabled(false);
+        binding.buttonBookmark.setEnabled(false);
         if(photoId == null){
             Toast.makeText(this, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
             finish();
@@ -71,7 +80,10 @@ public class PhotoDetailActivity extends AppCompatActivity {
                 }
                 binding.textviewTag.setText(tags);
                 Glide.with(this).load(fetchedPhoto.getImageUrl()).into(binding.imageviewDetail);
+                binding.buttonDownload.setEnabled(true);
+                binding.buttonBookmark.setEnabled(true);
                 photo = fetchedPhoto;
+                viewModel.loadBookmarkStatus(photoId);
             }
         });
     }
@@ -95,10 +107,31 @@ public class PhotoDetailActivity extends AppCompatActivity {
     }
 
     private void initBookmark(){
+        isBookmarked = false;
         binding.buttonBookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
+                viewModel.toggleBookmark(photo, isBookmarked);
+            }
+        });
+        viewModel.getToggleBookmark().observe(this, bookmarked -> {
+            if(bookmarked){
+                isBookmarked = true;
+                binding.buttonBookmark.setAlpha(1.0f);
+                Toast.makeText(context, "북마크에 추가되었어요!", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                isBookmarked = false;
+                binding.buttonBookmark.setAlpha(0.3f);
+                Toast.makeText(context, "북마크에서 해제되었어요.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        viewModel.getIsBookmarked().observe(this, bookmarked -> {
+            isBookmarked = bookmarked;
+            if(bookmarked){
+                binding.buttonBookmark.setAlpha(1.0f);
+            }else{
+                binding.buttonBookmark.setAlpha(0.3f);
             }
         });
     }
