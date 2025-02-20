@@ -8,4 +8,5 @@ import java.util.List;
 public interface UnsplashRepository {
     void getPhotos(int page, int perPage, Callback<List<Photo>> callback);
     void getRandomPhoto(Callback<Photo> callback);
+    void getPhoto(String id, Callback<Photo> callback);
 }

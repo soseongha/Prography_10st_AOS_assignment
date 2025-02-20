@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        setBottomNav();
-        setStatusBar();
+        initBottomNav();
+        initStatusBar();
     }
 
-    private void setBottomNav(){
+    private void initBottomNav(){
         BottomNavigationView navView = binding.navView;
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
 
@@ -50,10 +50,9 @@ public class MainActivity extends AppCompatActivity {
             // navHostFragment가 null인 경우에 대한 처리
             Log.e(TAG, "NavHostFragment not found");
         }
-
     }
 
-    private void setStatusBar(){
+    private void initStatusBar(){
         // 상태바 세팅
         Window window = getWindow();
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.white));

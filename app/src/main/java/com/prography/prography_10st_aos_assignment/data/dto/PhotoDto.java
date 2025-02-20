@@ -9,6 +9,9 @@ public class PhotoDto {
     @SerializedName("id")
     private String id;
 
+    @SerializedName("slug")
+    private String slug;
+
     @SerializedName("created_at")
     private String createdAt;
 
@@ -68,6 +71,10 @@ public class PhotoDto {
         return id;
     }
 
+    public String getSlug() {
+        return slug;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -82,5 +89,9 @@ public class PhotoDto {
 
     public UrlsDto getUrls() {
         return urls;
+    }
+
+    public LinksDto getLinks() {
+        return links;
     }
 }

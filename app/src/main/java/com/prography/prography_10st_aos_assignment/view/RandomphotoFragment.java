@@ -1,6 +1,7 @@
 package com.prography.prography_10st_aos_assignment.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,11 +17,15 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.prography.prography_10st_aos_assignment.data.dto.TagDto;
+import com.prography.prography_10st_aos_assignment.data.repositoryImpl.LocalRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.FragmentRandomphotoBinding;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
+import com.prography.prography_10st_aos_assignment.domain.usecase.GetBookmarksUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetRandomPhotoUsecase;
+import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
 import com.prography.prography_10st_aos_assignment.utils.ViewPagerItemDecoration;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModel;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModelFactory;
@@ -28,6 +33,7 @@ import com.prography.prography_10st_aos_assignment.viewmodel.RandomPhotoViewMode
 import com.prography.prography_10st_aos_assignment.viewmodel.RandomPhotoViewModelFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RandomphotoFragment extends Fragment {
     private FragmentRandomphotoBinding binding;
@@ -42,7 +48,8 @@ public class RandomphotoFragment extends Fragment {
         context = getContext();
 
         GetRandomPhotoUsecase getRandomPhotoUsecase = new GetRandomPhotoUsecase(new UnsplashRepositoryImpl());
-        RandomPhotoViewModelFactory factory = new RandomPhotoViewModelFactory(getRandomPhotoUsecase);
+        ToggleBookmarkUsecase toggleBookmarkUsecase = new ToggleBookmarkUsecase(new LocalRepositoryImpl(context));
+        RandomPhotoViewModelFactory factory = new RandomPhotoViewModelFactory(getRandomPhotoUsecase, toggleBookmarkUsecase);
         viewModel = new ViewModelProvider(this, factory).get(RandomPhotoViewModel.class);
 
         loadRandomPhotos();
@@ -65,12 +72,6 @@ public class RandomphotoFragment extends Fragment {
             if(fetchedPhoto == null){
                 Toast.makeText(context, "호출에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "호출 실패");
-                /**
-                 * TODO: 삭제해야 하는 코드
-                 */
-                fetchedPhoto = new Photo("a1jfkd", "example", "example", "ssh", "https://r1.community.samsung.com/t5/image/serverpage/image-id/141368i8F105F6B57DB0E3D/image-size/large?v=v2&px=999");
-                photos.add(fetchedPhoto);
-                adapter.notifyItemInserted(photos.size() - 1);
             }
             else{
                 photos.add(fetchedPhoto);
@@ -109,15 +110,26 @@ public class RandomphotoFragment extends Fragment {
     }
 
     public void onXButtonClicked(){
-
+        /*아무 명세도 없음*/
+        return;
     }
 
-    public void onBookmarkButtonClicked(){
-        viewpager.setCurrentItem(viewpager.getCurrentItem()+1, true);
-        //TODO 북마크에 저장 로직 추가 요망
+    public void onBookmarkButtonClicked(Photo photo){
+        viewModel.getToggleBookmark().observe(this, bookmarked -> {
+            if(bookmarked){
+                Toast.makeText(context, "북마크에 추가되었어요!", Toast.LENGTH_SHORT).show();
+                viewpager.setCurrentItem(viewpager.getCurrentItem()+1, true);
+            }
+            else{
+                Toast.makeText(context, "잘못된 접근입니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        viewModel.toggleBookmark(photo, false);
     }
 
-    public void onInfoButtonClicked(){
-
+    public void onInfoButtonClicked(String photoId){
+        Intent intent = new Intent(context, PhotoDetailActivity.class);
+        intent.putExtra("photoId", photoId);
+        startActivity(intent);
     }
 }

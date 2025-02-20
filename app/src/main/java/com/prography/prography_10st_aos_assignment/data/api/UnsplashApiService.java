@@ -6,6 +6,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface UnsplashApiService {
@@ -19,5 +20,12 @@ public interface UnsplashApiService {
     @GET("/photos/random")
     Call<PhotoDto> getRandomPhoto(
             @Query("client_id") String clientId
+    );
+
+    @GET("/photos/{id}")
+    Call<PhotoDto> getPhoto(
+            @Path("id") String id,
+            @Query("client_id") String clientId
+
     );
 }
