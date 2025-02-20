@@ -121,6 +121,7 @@ public class MainFragment extends Fragment {
                 binding.bookmarkLayout.setVisibility(View.GONE);
             }
             else{
+                bookmarks.clear();
                 bookmarks.addAll(fetchedBookmarks);
                 mainBookmarkAdapter.notifyItemInserted(bookmarks.size() - 1);
             }

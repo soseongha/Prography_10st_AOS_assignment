@@ -98,6 +98,5 @@ public class PhotoDetailViewModel extends ViewModel {
             boolean bookmarked = toggleBookmarkUsecase.execute(photo, isBookmarked);
             setToggleBookmark(bookmarked);
         }).start();
-
     }
 }
