@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_main"
+        android:title="메인"
+        android:icon="@drawable/icon_house"
+        android:enabled="true" />
+    <item
+        android:id="@+id/menu_randomphoto"
+        android:title="랜덤 포토"
+        android:icon="@drawable/icon_cards"
+        android:enabled="true" />
+
+</menu>
