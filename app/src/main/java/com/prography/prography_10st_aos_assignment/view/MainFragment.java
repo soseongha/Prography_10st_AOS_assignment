@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -55,7 +56,7 @@ public class MainFragment extends Fragment {
         return root;
     }
 
-    private void loadNewPhotos(){
+    private void loadNewPhotos() {
         binding.itemTitleNew.textviewTitle.setText("최신 이미지");
 
         ArrayList<Photo> photos = new ArrayList<>();
@@ -65,14 +66,14 @@ public class MainFragment extends Fragment {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         newRecycler.setLayoutManager(layoutManager);
         newRecycler.setAdapter(mainNewAdapter);
+        newRecycler.requestFocus();
 
         viewModel.clearPage();
         viewModel.getPhotos().observe(getViewLifecycleOwner(), fetchedPhotos -> {
-            if(fetchedPhotos == null){
+            if (fetchedPhotos == null) {
                 Toast.makeText(context, "호출에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "호출 실패");
-            }
-            else{
+            } else {
                 photos.addAll(fetchedPhotos);
                 mainNewAdapter.notifyItemInserted(photos.size() - 1);
             }
@@ -81,26 +82,14 @@ public class MainFragment extends Fragment {
         viewModel.fetchPhotos();
 
         /*무한스크롤*/
-        long DEBOUNCE_DELAY = 0;
-        Handler handler = new Handler(Looper.getMainLooper());
-        newRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.scrollviewLayout.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isLoading) {
-                    if (photos.isEmpty()) {
-                        return;
-                    } else {
-                        isLoading = true;
-                        viewModel.fetchPhotos();
-                        handler.postDelayed(() -> isLoading = false, DEBOUNCE_DELAY);
-                    }
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) && !isLoading) {
+                    isLoading = true;
+                    viewModel.fetchPhotos();
+                    isLoading = false;
                 }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
             }
         });
     }
