@@ -1,4 +1,4 @@
-package com.prography.prography_10st_aos_assignment.data.dto;
+package com.prography.prography_10st_aos_assignment.data.remote.dto;
 
 import androidx.annotation.Nullable;
 

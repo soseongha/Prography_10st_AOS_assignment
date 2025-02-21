@@ -1,6 +1,6 @@
-package com.prography.prography_10st_aos_assignment.data.api;
+package com.prography.prography_10st_aos_assignment.data.remote.api;
 
-import com.prography.prography_10st_aos_assignment.data.dto.PhotoDto;
+import com.prography.prography_10st_aos_assignment.data.remote.dto.PhotoDto;
 
 import java.util.List;
 

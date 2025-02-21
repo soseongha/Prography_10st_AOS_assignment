@@ -20,7 +20,7 @@ import com.prography.prography_10st_aos_assignment.domain.usecase.IsBookmarkedUs
 import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotoUsecase;
 import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModelFactory;
+import com.prography.prography_10st_aos_assignment.viewmodel.factory.PhotoDetailViewModelFactory;
 
 public class PhotoDetailActivity extends AppCompatActivity {
     private ActivityPhotodetailBinding binding;

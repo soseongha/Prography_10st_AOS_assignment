@@ -3,8 +3,6 @@ package com.prography.prography_10st_aos_assignment.view;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +25,10 @@ import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetBookmarksUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
 import com.prography.prography_10st_aos_assignment.utils.WrapContentLinearLayoutManager;
+import com.prography.prography_10st_aos_assignment.view.adapter.MainBookmarkAdapter;
+import com.prography.prography_10st_aos_assignment.view.adapter.MainNewAdapter;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModelFactory;
+import com.prography.prography_10st_aos_assignment.viewmodel.factory.MainPhotoViewModelFactory;
 
 import java.util.ArrayList;
 

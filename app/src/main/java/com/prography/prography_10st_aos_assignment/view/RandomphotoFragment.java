@@ -17,23 +17,18 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.prography.prography_10st_aos_assignment.data.dto.TagDto;
 import com.prography.prography_10st_aos_assignment.data.repositoryImpl.LocalRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.FragmentRandomphotoBinding;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
-import com.prography.prography_10st_aos_assignment.domain.usecase.GetBookmarksUsecase;
-import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetRandomPhotoUsecase;
 import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
 import com.prography.prography_10st_aos_assignment.utils.ViewPagerItemDecoration;
-import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModelFactory;
+import com.prography.prography_10st_aos_assignment.view.adapter.RandomphotoAdapter;
 import com.prography.prography_10st_aos_assignment.viewmodel.RandomPhotoViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.RandomPhotoViewModelFactory;
+import com.prography.prography_10st_aos_assignment.viewmodel.factory.RandomPhotoViewModelFactory;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class RandomphotoFragment extends Fragment {
     private FragmentRandomphotoBinding binding;
@@ -82,7 +77,6 @@ public class RandomphotoFragment extends Fragment {
         new Handler(Looper.getMainLooper()).postDelayed(() ->
                 viewModel.fetchRandomPhoto(), 50);
 
-        //마지막 페이지 도달 시, 사진 하나 load
         viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {

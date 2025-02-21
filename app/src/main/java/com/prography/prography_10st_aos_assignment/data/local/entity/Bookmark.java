@@ -1,4 +1,4 @@
-package com.prography.prography_10st_aos_assignment.data.local;
+package com.prography.prography_10st_aos_assignment.data.local.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
