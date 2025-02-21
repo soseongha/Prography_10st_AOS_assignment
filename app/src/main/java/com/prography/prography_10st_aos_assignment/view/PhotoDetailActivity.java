@@ -12,16 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.LocalRepositoryImpl;
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.ActivityPhotodetailBinding;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
-import com.prography.prography_10st_aos_assignment.domain.usecase.IsBookmarkedUsecase;
-import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
-import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotoUsecase;
 import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModelFactory;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class PhotoDetailActivity extends AppCompatActivity {
     private ActivityPhotodetailBinding binding;
     private PhotoDetailViewModel viewModel;
@@ -37,14 +34,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
         View view = binding.getRoot();
         this.context = this;
         setContentView(view);
-
-        UnsplashRepositoryImpl unsplashRepository = new UnsplashRepositoryImpl();
-        LocalRepositoryImpl localRepository = new LocalRepositoryImpl(this);
-        GetPhotoUsecase getPhotoUsecase = new GetPhotoUsecase(unsplashRepository);
-        IsBookmarkedUsecase isBookmarkedUsecase = new IsBookmarkedUsecase(localRepository);
-        ToggleBookmarkUsecase bookMarkUsecase = new ToggleBookmarkUsecase(localRepository);
-        PhotoDetailViewModelFactory factory = new PhotoDetailViewModelFactory(getPhotoUsecase, isBookmarkedUsecase, bookMarkUsecase);
-        viewModel = new ViewModelProvider(this, factory).get(PhotoDetailViewModel.class);
+        viewModel = new ViewModelProvider(this).get(PhotoDetailViewModel.class);
 
         loadPhoto();
         initClose();

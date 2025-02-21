@@ -1,4 +1,4 @@
-package com.prography.prography_10st_aos_assignment.view;
+package com.prography.prography_10st_aos_assignment.view.adapter;
 
 import android.content.Context;
 import android.os.Build;
@@ -6,17 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.prography.prography_10st_aos_assignment.R;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
+import com.prography.prography_10st_aos_assignment.view.RandomphotoFragment;
 
 import java.util.ArrayList;
 

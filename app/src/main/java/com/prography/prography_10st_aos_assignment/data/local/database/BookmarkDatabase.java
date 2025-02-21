@@ -1,10 +1,13 @@
-package com.prography.prography_10st_aos_assignment.data.local;
+package com.prography.prography_10st_aos_assignment.data.local.database;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.prography.prography_10st_aos_assignment.data.local.dao.BookmarkDao;
+import com.prography.prography_10st_aos_assignment.data.local.entity.Bookmark;
 
 @Database(entities = {Bookmark.class}, version = 1)
 public abstract class BookmarkDatabase extends RoomDatabase {

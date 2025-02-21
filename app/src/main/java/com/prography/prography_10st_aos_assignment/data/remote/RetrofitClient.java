@@ -1,13 +1,8 @@
-package com.prography.prography_10st_aos_assignment.data;
-
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
+package com.prography.prography_10st_aos_assignment.data.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;

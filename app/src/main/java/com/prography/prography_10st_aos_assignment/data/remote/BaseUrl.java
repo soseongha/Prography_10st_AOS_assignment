@@ -1,4 +1,4 @@
-package com.prography.prography_10st_aos_assignment.data;
+package com.prography.prography_10st_aos_assignment.data.remote;
 
 public enum BaseUrl {
     BASE_URL("https://api.unsplash.com/");

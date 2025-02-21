@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,50 +11,50 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.LocalRepositoryImpl;
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.FragmentMainBinding;
 import com.prography.prography_10st_aos_assignment.domain.entity.Bookmark;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
-import com.prography.prography_10st_aos_assignment.domain.usecase.GetBookmarksUsecase;
-import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
 import com.prography.prography_10st_aos_assignment.utils.WrapContentLinearLayoutManager;
+import com.prography.prography_10st_aos_assignment.view.adapter.MainBookmarkAdapter;
+import com.prography.prography_10st_aos_assignment.view.adapter.MainNewAdapter;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModelFactory;
+
+import dagger.hilt.android.AndroidEntryPoint;
 
 import java.util.ArrayList;
 
+@AndroidEntryPoint
 public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private MainPhotoViewModel viewModel;
     private Context context;
     private Boolean isLoading = false;
+    private Boolean isRefreshing = true;
     private final String TAG = getClass().toString();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         context = getContext();
-
-        GetPhotosUsecase getPhotosUsecase = new GetPhotosUsecase(new UnsplashRepositoryImpl());
-        GetBookmarksUsecase getBookmarksUsecase = new GetBookmarksUsecase(new LocalRepositoryImpl(context));
-        MainPhotoViewModelFactory factory = new MainPhotoViewModelFactory(getPhotosUsecase, getBookmarksUsecase);
-        viewModel = new ViewModelProvider(this, factory).get(MainPhotoViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MainPhotoViewModel.class);
 
         showSkeleton(true);
         loadNewPhotos();
         loadBookmarks();
+        setRefresh();
 
         return root;
     }
 
-    private void loadNewPhotos(){
+    private void loadNewPhotos() {
         binding.itemTitleNew.textviewTitle.setText("최신 이미지");
 
         ArrayList<Photo> photos = new ArrayList<>();
@@ -65,42 +64,32 @@ public class MainFragment extends Fragment {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         newRecycler.setLayoutManager(layoutManager);
         newRecycler.setAdapter(mainNewAdapter);
+        newRecycler.requestFocus();
 
         viewModel.clearPage();
         viewModel.getPhotos().observe(getViewLifecycleOwner(), fetchedPhotos -> {
-            if(fetchedPhotos == null){
+            if (fetchedPhotos == null) {
                 Toast.makeText(context, "호출에 실패했습니다.", Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "호출 실패");
-            }
-            else{
+            } else {
+                if(isRefreshing) photos.clear();
                 photos.addAll(fetchedPhotos);
-                mainNewAdapter.notifyItemInserted(photos.size() - 1);
+                if(isRefreshing) mainNewAdapter.notifyDataSetChanged();
+                else mainNewAdapter.notifyItemInserted(photos.size() - 1);
             }
             showSkeleton(false);
         });
         viewModel.fetchPhotos();
 
         /*무한스크롤*/
-        long DEBOUNCE_DELAY = 0;
-        Handler handler = new Handler(Looper.getMainLooper());
-        newRecycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        binding.scrollviewLayout.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE && !isLoading) {
-                    if (photos.isEmpty()) {
-                        return;
-                    } else {
-                        isLoading = true;
-                        viewModel.fetchPhotos();
-                        handler.postDelayed(() -> isLoading = false, DEBOUNCE_DELAY);
-                    }
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight()) && !isLoading) {
+                    isLoading = true;
+                    viewModel.fetchPhotos();
+                    isLoading = false;
                 }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
             }
         });
     }
@@ -123,7 +112,8 @@ public class MainFragment extends Fragment {
             else{
                 bookmarks.clear();
                 bookmarks.addAll(fetchedBookmarks);
-                mainBookmarkAdapter.notifyItemInserted(bookmarks.size() - 1);
+                if(isRefreshing) mainBookmarkAdapter.notifyDataSetChanged();
+                else mainBookmarkAdapter.notifyItemInserted(bookmarks.size() - 1);
             }
         });
         viewModel.fetchBookmarks();
@@ -147,6 +137,19 @@ public class MainFragment extends Fragment {
             binding.recyclerNew.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    private void setRefresh(){
+        binding.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                isRefreshing = true;
+                viewModel.fetchBookmarks();
+                viewModel.fetchPhotos();
+                binding.swipeRefreshLayout.setRefreshing(false);
+                new Handler().postDelayed(() -> isRefreshing = false, 1000);
+            }
+        });
     }
 
     public void onNewPhotoClicked(String photoId){

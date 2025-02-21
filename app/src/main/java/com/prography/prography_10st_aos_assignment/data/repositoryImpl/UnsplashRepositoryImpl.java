@@ -1,15 +1,13 @@
 package com.prography.prography_10st_aos_assignment.data.repositoryImpl;
 
-import android.app.Application;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import com.prography.prography_10st_aos_assignment.BuildConfig;
-import com.prography.prography_10st_aos_assignment.data.RetrofitClient;
-import com.prography.prography_10st_aos_assignment.data.api.UnsplashApiService;
-import com.prography.prography_10st_aos_assignment.data.dto.PhotoDto;
-import com.prography.prography_10st_aos_assignment.data.dto.TagDto;
+import com.prography.prography_10st_aos_assignment.data.remote.RetrofitClient;
+import com.prography.prography_10st_aos_assignment.data.remote.api.UnsplashApiService;
+import com.prography.prography_10st_aos_assignment.data.remote.dto.PhotoDto;
+import com.prography.prography_10st_aos_assignment.data.remote.dto.TagDto;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
 import com.prography.prography_10st_aos_assignment.domain.repository.UnsplashRepository;
 import com.prography.prography_10st_aos_assignment.utils.Callback;

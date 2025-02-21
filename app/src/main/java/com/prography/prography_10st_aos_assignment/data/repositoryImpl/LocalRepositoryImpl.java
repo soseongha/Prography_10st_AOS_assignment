@@ -2,9 +2,9 @@ package com.prography.prography_10st_aos_assignment.data.repositoryImpl;
 
 import android.content.Context;
 
-import com.prography.prography_10st_aos_assignment.data.local.Bookmark;
-import com.prography.prography_10st_aos_assignment.data.local.BookmarkDao;
-import com.prography.prography_10st_aos_assignment.data.local.BookmarkDatabase;
+import com.prography.prography_10st_aos_assignment.data.local.entity.Bookmark;
+import com.prography.prography_10st_aos_assignment.data.local.dao.BookmarkDao;
+import com.prography.prography_10st_aos_assignment.data.local.database.BookmarkDatabase;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
 import com.prography.prography_10st_aos_assignment.domain.repository.LocalRepository;
 

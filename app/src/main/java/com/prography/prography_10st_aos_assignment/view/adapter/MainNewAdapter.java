@@ -1,7 +1,6 @@
-package com.prography.prography_10st_aos_assignment.view;
+package com.prography.prography_10st_aos_assignment.view.adapter;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.prography.prography_10st_aos_assignment.R;
 import android.content.Context;
 import android.os.Build;
@@ -17,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
+import com.prography.prography_10st_aos_assignment.view.MainFragment;
 
 import java.util.ArrayList;
 

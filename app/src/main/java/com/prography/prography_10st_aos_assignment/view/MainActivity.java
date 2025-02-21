@@ -17,6 +17,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.prography.prography_10st_aos_assignment.R;
 import com.prography.prography_10st_aos_assignment.databinding.ActivityMainBinding;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     public String TAG = getClass().toString();
