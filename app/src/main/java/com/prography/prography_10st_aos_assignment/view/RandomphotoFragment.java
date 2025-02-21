@@ -17,16 +17,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.LocalRepositoryImpl;
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.FragmentRandomphotoBinding;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
-import com.prography.prography_10st_aos_assignment.domain.usecase.GetRandomPhotoUsecase;
-import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
 import com.prography.prography_10st_aos_assignment.utils.ViewPagerItemDecoration;
 import com.prography.prography_10st_aos_assignment.view.adapter.RandomphotoAdapter;
 import com.prography.prography_10st_aos_assignment.viewmodel.RandomPhotoViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.factory.RandomPhotoViewModelFactory;
 
 import dagger.hilt.android.AndroidEntryPoint;
 

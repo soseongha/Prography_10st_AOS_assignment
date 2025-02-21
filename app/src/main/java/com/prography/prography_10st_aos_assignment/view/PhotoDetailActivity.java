@@ -12,15 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.LocalRepositoryImpl;
-import com.prography.prography_10st_aos_assignment.data.repositoryImpl.UnsplashRepositoryImpl;
 import com.prography.prography_10st_aos_assignment.databinding.ActivityPhotodetailBinding;
 import com.prography.prography_10st_aos_assignment.domain.entity.Photo;
-import com.prography.prography_10st_aos_assignment.domain.usecase.IsBookmarkedUsecase;
-import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
-import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotoUsecase;
 import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModel;
-import com.prography.prography_10st_aos_assignment.viewmodel.factory.PhotoDetailViewModelFactory;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
