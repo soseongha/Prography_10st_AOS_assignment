@@ -10,8 +10,13 @@ import com.prography.prography_10st_aos_assignment.domain.usecase.GetBookmarksUs
 import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotosUsecase;
 import com.prography.prography_10st_aos_assignment.utils.Callback;
 
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
 import java.util.List;
 
+import javax.inject.Inject;
+
+@HiltViewModel
 public class MainPhotoViewModel extends ViewModel {
     private final GetPhotosUsecase getPhotosUsecase;
     private final GetBookmarksUsecase getBookmarksUsecase;
@@ -21,6 +26,7 @@ public class MainPhotoViewModel extends ViewModel {
     private int perPage;
     private final String TAG = getClass().toString();
 
+    @Inject
     public MainPhotoViewModel(GetPhotosUsecase getPhotosUsecase, GetBookmarksUsecase getBookmarksUsecase) {
         this.getPhotosUsecase = getPhotosUsecase;
         this.getBookmarksUsecase = getBookmarksUsecase;

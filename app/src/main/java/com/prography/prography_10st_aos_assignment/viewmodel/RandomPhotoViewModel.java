@@ -11,8 +11,13 @@ import com.prography.prography_10st_aos_assignment.domain.usecase.IsBookmarkedUs
 import com.prography.prography_10st_aos_assignment.domain.usecase.ToggleBookmarkUsecase;
 import com.prography.prography_10st_aos_assignment.utils.Callback;
 
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
 import java.util.List;
 
+import javax.inject.Inject;
+
+@HiltViewModel
 public class RandomPhotoViewModel extends ViewModel {
     private final GetRandomPhotoUsecase getRandomPhotoUsecase;
     private final ToggleBookmarkUsecase toggleBookmarkUsecase;
@@ -20,6 +25,7 @@ public class RandomPhotoViewModel extends ViewModel {
     private final MutableLiveData<Boolean> toggleBookmarkLiveData = new MutableLiveData<>();
     private final String TAG = getClass().toString();
 
+    @Inject
     public RandomPhotoViewModel(GetRandomPhotoUsecase getRandomPhotoUsecase, ToggleBookmarkUsecase toggleBookmarkUsecase) {
         this.getRandomPhotoUsecase = getRandomPhotoUsecase;
         this.toggleBookmarkUsecase = toggleBookmarkUsecase;

@@ -30,8 +30,11 @@ import com.prography.prography_10st_aos_assignment.view.adapter.MainNewAdapter;
 import com.prography.prography_10st_aos_assignment.viewmodel.MainPhotoViewModel;
 import com.prography.prography_10st_aos_assignment.viewmodel.factory.MainPhotoViewModelFactory;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 import java.util.ArrayList;
 
+@AndroidEntryPoint
 public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private MainPhotoViewModel viewModel;
@@ -43,11 +46,7 @@ public class MainFragment extends Fragment {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         context = getContext();
-
-        GetPhotosUsecase getPhotosUsecase = new GetPhotosUsecase(new UnsplashRepositoryImpl());
-        GetBookmarksUsecase getBookmarksUsecase = new GetBookmarksUsecase(new LocalRepositoryImpl(context));
-        MainPhotoViewModelFactory factory = new MainPhotoViewModelFactory(getPhotosUsecase, getBookmarksUsecase);
-        viewModel = new ViewModelProvider(this, factory).get(MainPhotoViewModel.class);
+        viewModel = new ViewModelProvider(this).get(MainPhotoViewModel.class);
 
         showSkeleton(true);
         loadNewPhotos();

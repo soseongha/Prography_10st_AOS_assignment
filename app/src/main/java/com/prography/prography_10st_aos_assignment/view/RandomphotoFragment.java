@@ -28,8 +28,11 @@ import com.prography.prography_10st_aos_assignment.view.adapter.RandomphotoAdapt
 import com.prography.prography_10st_aos_assignment.viewmodel.RandomPhotoViewModel;
 import com.prography.prography_10st_aos_assignment.viewmodel.factory.RandomPhotoViewModelFactory;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 import java.util.ArrayList;
 
+@AndroidEntryPoint
 public class RandomphotoFragment extends Fragment {
     private FragmentRandomphotoBinding binding;
     private RandomPhotoViewModel viewModel;
@@ -41,11 +44,7 @@ public class RandomphotoFragment extends Fragment {
         binding = FragmentRandomphotoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         context = getContext();
-
-        GetRandomPhotoUsecase getRandomPhotoUsecase = new GetRandomPhotoUsecase(new UnsplashRepositoryImpl());
-        ToggleBookmarkUsecase toggleBookmarkUsecase = new ToggleBookmarkUsecase(new LocalRepositoryImpl(context));
-        RandomPhotoViewModelFactory factory = new RandomPhotoViewModelFactory(getRandomPhotoUsecase, toggleBookmarkUsecase);
-        viewModel = new ViewModelProvider(this, factory).get(RandomPhotoViewModel.class);
+        viewModel = new ViewModelProvider(this).get(RandomPhotoViewModel.class);
 
         loadRandomPhotos();
 

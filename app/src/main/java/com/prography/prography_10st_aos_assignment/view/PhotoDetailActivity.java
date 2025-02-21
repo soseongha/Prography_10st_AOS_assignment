@@ -22,6 +22,9 @@ import com.prography.prography_10st_aos_assignment.domain.usecase.GetPhotoUsecas
 import com.prography.prography_10st_aos_assignment.viewmodel.PhotoDetailViewModel;
 import com.prography.prography_10st_aos_assignment.viewmodel.factory.PhotoDetailViewModelFactory;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class PhotoDetailActivity extends AppCompatActivity {
     private ActivityPhotodetailBinding binding;
     private PhotoDetailViewModel viewModel;
@@ -37,14 +40,7 @@ public class PhotoDetailActivity extends AppCompatActivity {
         View view = binding.getRoot();
         this.context = this;
         setContentView(view);
-
-        UnsplashRepositoryImpl unsplashRepository = new UnsplashRepositoryImpl();
-        LocalRepositoryImpl localRepository = new LocalRepositoryImpl(this);
-        GetPhotoUsecase getPhotoUsecase = new GetPhotoUsecase(unsplashRepository);
-        IsBookmarkedUsecase isBookmarkedUsecase = new IsBookmarkedUsecase(localRepository);
-        ToggleBookmarkUsecase bookMarkUsecase = new ToggleBookmarkUsecase(localRepository);
-        PhotoDetailViewModelFactory factory = new PhotoDetailViewModelFactory(getPhotoUsecase, isBookmarkedUsecase, bookMarkUsecase);
-        viewModel = new ViewModelProvider(this, factory).get(PhotoDetailViewModel.class);
+        viewModel = new ViewModelProvider(this).get(PhotoDetailViewModel.class);
 
         loadPhoto();
         initClose();
