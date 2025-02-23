@@ -37,7 +37,7 @@ public class MainFragment extends Fragment {
     private MainPhotoViewModel viewModel;
     private Context context;
     private Boolean isLoading = false;
-    private Boolean isRefreshing = true;
+    private Boolean isRefreshing = false;
     private final String TAG = getClass().toString();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
